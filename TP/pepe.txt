@@ -1,0 +1,71 @@
+
+.2.0
+A_5
+
+IF ELSE ENDIF&||WRITE 
+a1::=""
+9.1
+.9
+1.
+10.25
+25.1000
+25
+"hola"
+//*PEPE*//
+//**//
+
+[ ]
+( )
+
++
+-
+*
+/
+>
+<
+>=
+<=
+!=
+=
+
+DECLARE.SECTION
+ENDDECLARE.SECTION
+PROGRAM.SECTION
+ENDPROGRAM.SECTION
+FLOAT
+INT
+STRING
+32
+,
+;
+WHILE
+ENDWHILE
+PROMR
+
+//* //*PEPES*//*//
+	//* 10//*PEP*// *//
+
+DECLARE.SECTION
+    [a1,b1,c1] ::= [INT,FLOAT]
+    [s1] ::= [STRING]
+ENDDECLARE.SECTION
+
+PROGRAM.SECTION
+    a1::=10;
+    b1::=1.5;
+    s1 ::= "TEO1"
+    WHILE ((a1<50) & (25!=10)|| s1 = "TEO")
+        WRITE "PEDRITO";
+        IF b1<2.0 THEN
+            WRITE a1;
+        ELSE
+            WRITE b1;
+        ENDIF
+    ENDWHILE
+    WRITE s1; //*MUESTRO TEO1*//
+    //* 10+5//* NO ANDA *// *//
+	25
+    c1 ::=  PROMR(a1;<=; [50,3,25])
+ENDPROGRAM.SECTION
+//*PEPES*// 25
+	//* 10+20//*PEP*// *// 

@@ -1,0 +1,46 @@
+NOMBRE | TOKEN | TIPO | VALOR | LONG 
+_.2 | CONST_FLOAT | -- | .2 | 0 | 
+_.0 | CONST_FLOAT | -- | .0 | 0 | 
+A_5 | ID | ID |  | 0 | 
+a1 | ID | ID |  | 0 | 
+_ | CONST_STRING | -- |  | 0 | 
+_9.1 | CONST_FLOAT | -- | 9.1 | 0 | 
+_.9 | CONST_FLOAT | -- | .9 | 0 | 
+_1. | CONST_FLOAT | -- | 1. | 0 | 
+_10.25 | CONST_FLOAT | -- | 10.25 | 0 | 
+_25.1000 | CONST_FLOAT | -- | 25.1000 | 0 | 
+_25 | CONST_INT | -- | 25 | 0 | 
+_hola | CONST_STRING | -- | hola | 4 | 
+_32 | CONST_INT | -- | 32 | 0 | 
+a1 | ID | ID |  | 0 | 
+b1 | ID | ID |  | 0 | 
+c1 | ID | ID |  | 0 | 
+s1 | ID | ID |  | 0 | 
+a1 | ID | ID |  | 0 | 
+_10 | CONST_INT | -- | 10 | 0 | 
+b1 | ID | ID |  | 0 | 
+_1.5 | CONST_FLOAT | -- | 1.5 | 0 | 
+s1 | ID | ID |  | 0 | 
+_TEO1 | CONST_STRING | -- | TEO1 | 4 | 
+a1 | ID | ID |  | 0 | 
+_50 | CONST_INT | -- | 50 | 0 | 
+_25 | CONST_INT | -- | 25 | 0 | 
+_10 | CONST_INT | -- | 10 | 0 | 
+s1 | ID | ID |  | 0 | 
+_TEO | CONST_STRING | -- | TEO | 3 | 
+_PEDRITO | CONST_STRING | -- | PEDRITO | 7 | 
+b1 | ID | ID |  | 0 | 
+_2.0 | CONST_FLOAT | -- | 2.0 | 0 | 
+THEN | ID | ID |  | 0 | 
+a1 | ID | ID |  | 0 | 
+b1 | ID | ID |  | 0 | 
+s1 | ID | ID |  | 0 | 
+if | ID | ID |  | 0 | 
+_5 | CONST_INT | -- | 5 | 0 | 
+_3 | CONST_INT | -- | 3 | 0 | 
+c1 | ID | ID |  | 0 | 
+a1 | ID | ID |  | 0 | 
+_50 | CONST_INT | -- | 50 | 0 | 
+_3 | CONST_INT | -- | 3 | 0 | 
+_25 | CONST_INT | -- | 25 | 0 | 
+_25 | CONST_INT | -- | 25 | 0 | 
