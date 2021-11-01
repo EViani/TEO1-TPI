@@ -149,12 +149,6 @@ COMEN = {COMEA}({LETRAS}|{NUMERO}|{SIMBOLO}|{ESPACIO}|{SALTO})* ({COMEA}({LETRAS
 
 <YYINITIAL> {
 
-
-
-
-
-
----------------------------------------------------------------
 {PR_AND}		{return new Symbol(sym.PR_AND,yytext());}
 {PR_OR}		{return new Symbol(sym.PR_OR,yytext());}
 {PR_IF}		{return new Symbol(sym.PR_IF,yytext());}
@@ -186,12 +180,10 @@ COMEN = {COMEA}({LETRAS}|{NUMERO}|{SIMBOLO}|{ESPACIO}|{SALTO})* ({COMEA}({LETRAS
 
 
 {CONST_STRING} {controlString(yytext()); 
-				setLexemas(yytext(),"CONST_STRING");
-                setSimbolos(yytext(),"CONST_STRING");} 
+				return new Symbol(sym.CONST_STRING,yytext());} 
 
 {CONST_FLOAT}	{controlReal(yytext()); 
-                setLexemas(yytext(),"CONST_FLOAT");
-                setSimbolos(yytext(),"CONST_FLOAT");}
+               return new Symbol(sym.CONST_FLOAT,yytext());}
 
 
 {COMA} {return new Symbol(sym.COMA,yytext());}

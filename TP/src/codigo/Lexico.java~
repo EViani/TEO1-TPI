@@ -836,7 +836,7 @@ public class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 42: break;
           case 4: 
-            { return new Symbol(sym.PR_IGUAL,yytext());
+            { return new Symbol(sym.IGUAL,yytext());
             } 
             // fall through
           case 43: break;
@@ -892,7 +892,7 @@ public class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 53: break;
           case 15: 
-            { return new Symbol(sym.PR_MENOR,yytext());
+            { return new Symbol(sym.MENOR,yytext());
             } 
             // fall through
           case 54: break;
@@ -919,12 +919,12 @@ public class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 58: break;
           case 20: 
-            { return new Symbol(sym.MENOROGUAL,yytext());
+            { return new Symbol(sym.MENOROIGUAL,yytext());
             } 
             // fall through
           case 59: break;
           case 21: 
-            { return new Symbol(sym.PR_DISTINTO,yytext());
+            { return new Symbol(sym.DISTINTO,yytext());
             } 
             // fall through
           case 60: break;

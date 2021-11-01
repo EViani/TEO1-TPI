@@ -22,12 +22,36 @@ action code
 terminal ID, ASSIGN, PARENA, PARENC, SUMA, RESTA, DIVI, MULTI,PR_DECLARE,COMA,CORCHA,CORCHC , PR_ENDDECLARE, PR_INT, CONST_INT,PR_FLOAT,PR_STRING,PR_AND,PR_OR,PR_IF,PR_ELSE,PR_ENDIF,PR_WRITE,PR_PROGRAM,PR_ENDPROGRAM,PUNTOYCOMA,PR_WHILE,PR_ENDWHILE,PR_PROMR,CONST_STRING,CONST_FLOAT,MAYOR,MENOR,MAYOROIGUAL,MENOROIGUAL,DISTINTO,IGUAL;
 
 /*Declaracion de No Terminales*/
-non terminal pgm,declare,listavariable,lista,assigvar,tipo,constante;
+non terminal pgm,declare,listavariable,lista,assigvar,tipo,constante,program,asignacion,valor,expresion,termino,factor,sentencias,sentencia,mostrar,compara,comp,expresionlog, if, while,linea, promr,valores,listaval;
 
 
 start with pgm;
 
-pgm ::= declare  {: System.out.println("pgm Regla 0 Compila correctamente llegando al simbolo start"); :};
+pgm ::=  program {: System.out.println("pgm Regla 0 Compila correctamente llegando al simbolo start"); :};
+
+sentencias ::= PR_PROGRAM sentencia PR_ENDPROGRAM{::};
+sentencia ::= sentencia linea{};
+sentencia ::= linea {};
+linea ::= asignacion {::} | mostrar {::} | if {} | while {};
+asignacion ::= ID ASSIGN valor PUNTOYCOMA {::};
+valor ::= CONST_STRING {::} | expresion {::} | promr {::};
+mostrar ::= PR_WRITE constante PUNTOYCOMA {::}| PR_WRITE ID PUNTOYCOMA {::};
+
+expresionlog ::= comp PR_AND comp {::}|comp PR_OR comp {::} | comp {::};
+comp ::= ID compara ID {} | ID compara constante {} | constante compara ID {};
+compara ::= MAYOR {}| MENOR {}| IGUAL {}| DISTINTO {}| MENOROIGUAL {}| MAYOROIGUAL {};
+
+if ::= PR_IF PARENA expresionlog PARENC sentencia PR_ENDIF PUNTOYCOMA {} | PR_IF PARENA expresionlog PARENC sentencia PR_ELSE sentencia PR_ENDIF PUNTOYCOMA {};
+while ::= PR_WHILE PARENA expresionlog PARENC sentencia PR_ENDWHILE PUNTOYCOMA {};
+promr ::= PR_PROMR PARENA ID PUNTOYCOMA MENOROIGUAL PUNTOYCOMA listaval PARENC {};
+listaval ::= CORCHA CORCHC {};
+listaval ::= CORCHA valores CORCHC {};
+valores ::= CONST_INT COMA valores {};
+valores ::= CONST_INT {};
+
+
+
+program ::= declare sentencias  {: System.out.println("pgm Regla 0 Compila correctamente llegando al simbolo start"); :};
 
 declare ::= PR_DECLARE lista PR_ENDDECLARE {: System.out.println("[Regla 1] llegando a declare"); :};
 lista ::= listavariable {:System.out.println("[Regla 9]");:};
@@ -38,7 +62,11 @@ assigvar ::= COMA ID assigvar tipo COMA {: System.out.println("[Regla 3] ");:};
 assigvar ::= CORCHC ASSIGN CORCHA {: System.out.println("[Regla 4] ");:};
 tipo ::= PR_INT  {:System.out.println("[Regla 5] ");:} | PR_FLOAT {:System.out.println("[Regla 6] ");:} | PR_STRING {:System.out.println("[Regla 7] ");:};
 
-constante ::= CONST_INT {::};             
+constante ::= CONST_INT {::} | CONST_STRING {::} | CONST_FLOAT {::};   
+expresion ::= expresion SUMA termino {::} | expresion RESTA termino {::} | termino {::};
+termino ::= termino MULTI factor {::} | termino DIVI factor {::} | factor{::};
+factor ::= CONST_INT {::} | CONST_FLOAT {::} | ID {::}; 
+          
              
 
 
