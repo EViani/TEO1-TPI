@@ -17,14 +17,15 @@ public class PuebaFlex {
 
     /**
      * @param args the command line arguments
+     * @throws Exception 
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
     	try {
             // TODO code application logic here
-            FileReader f = new FileReader("Prueba.txt");
+            FileReader f = new FileReader("pepe.txt");
             Lexico Lexer = new Lexico(f);
-            Lexer.next_token();
-            System.out.println(Lexer.getLexemas());
+            parser sintac = new parser(Lexer);
+            sintac.parse();
         } catch (FileNotFoundException ex) {
             System.out.println("No se encontro el archivo");
         }

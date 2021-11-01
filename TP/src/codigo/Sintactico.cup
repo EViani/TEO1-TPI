@@ -1,0 +1,46 @@
+package codigo;
+
+import java_cup.runtime.*;
+
+
+parser code
+{:
+    /**Metodo al que se llama automaticamente ante algun error sintactico.*/
+    public void syntax_error(Symbol s){
+        System.out.println("Error en la linea " + (s.right+1) + " columna " + s.left + ". "
+            + s + " no reconocido. valor " + s.value );
+    }
+
+:}
+
+action code
+{:
+:}
+
+
+/*Declaracion de Terminales */
+terminal ID, ASSIGN, PARENA, PARENC, SUMA, RESTA, DIVI, MULTI,PR_DECLARE,COMA,CORCHA,CORCHC , PR_ENDDECLARE, PR_INT, CONST_INT,PR_FLOAT,PR_STRING,PR_AND,PR_OR,PR_IF,PR_ELSE,PR_ENDIF,PR_WRITE,PR_PROGRAM,PR_ENDPROGRAM,PUNTOYCOMA,PR_WHILE,PR_ENDWHILE,PR_PROMR,CONST_STRING,CONST_FLOAT,MAYOR,MENOR,MAYOROIGUAL,MENOROIGUAL,DISTINTO,IGUAL;
+
+/*Declaracion de No Terminales*/
+non terminal pgm,declare,listavariable,lista,assigvar,tipo,constante;
+
+
+start with pgm;
+
+pgm ::= declare  {: System.out.println("pgm Regla 0 Compila correctamente llegando al simbolo start"); :};
+
+declare ::= PR_DECLARE lista PR_ENDDECLARE {: System.out.println("[Regla 1] llegando a declare"); :};
+lista ::= listavariable {:System.out.println("[Regla 9]");:};
+lista ::= listavariable lista {:System.out.println("[Regla 8]");:};
+
+listavariable ::= CORCHA ID assigvar tipo CORCHC  {: System.out.println("[Regla 2]");:};
+assigvar ::= COMA ID assigvar tipo COMA {: System.out.println("[Regla 3] ");:};
+assigvar ::= CORCHC ASSIGN CORCHA {: System.out.println("[Regla 4] ");:};
+tipo ::= PR_INT  {:System.out.println("[Regla 5] ");:} | PR_FLOAT {:System.out.println("[Regla 6] ");:} | PR_STRING {:System.out.println("[Regla 7] ");:};
+
+constante ::= CONST_INT {::};             
+             
+
+
+
+
