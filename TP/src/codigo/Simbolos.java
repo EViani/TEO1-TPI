@@ -26,6 +26,21 @@ public class Simbolos {
 		}
 	};
 	
+	public Simbolos(String n, String to, String ti) {
+		this.nombre=n;
+		this.token=to;
+		this.longitud=0;
+		this.valor="";
+		this.tipo=ti;
+		if (to != "ID") {
+			if (to == "CONST_STRING") {
+				this.longitud = nombre.length()-2;
+				this.nombre=nombre.substring(1,nombre.length()-1);
+			}
+			this.valor=nombre;
+			this.nombre= "_"+this.nombre;
+		}
+	};
 	
 	public String getNombre() {
 		return nombre;

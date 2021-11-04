@@ -26,6 +26,3 @@ PROGRAM.SECTION
     ENDIF;
 ENDPROGRAM.SECTION
 
-
-//*PEPES*// 
-	//* 10+20//*PEP*// *// 

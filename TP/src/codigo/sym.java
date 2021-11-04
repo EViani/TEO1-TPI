@@ -9,44 +9,44 @@ package codigo;
 public class sym {
   /* terminals */
   public static final int PARENC = 5;
-  public static final int DISTINTO = 37;
+  public static final int DISTINTO = 18;
   public static final int PARENA = 4;
-  public static final int PR_INT = 15;
-  public static final int PUNTOYCOMA = 27;
-  public static final int PR_OR = 20;
-  public static final int PR_PROMR = 30;
-  public static final int PR_ENDPROGRAM = 26;
-  public static final int PR_AND = 19;
+  public static final int PR_INT = 34;
+  public static final int PUNTOYCOMA = 13;
+  public static final int PR_OR = 23;
+  public static final int PR_PROMR = 32;
+  public static final int PR_ENDPROGRAM = 29;
+  public static final int PR_AND = 22;
   public static final int RESTA = 7;
-  public static final int PR_ENDIF = 23;
-  public static final int PR_IF = 21;
-  public static final int PR_ELSE = 22;
-  public static final int PR_ENDDECLARE = 14;
-  public static final int PR_WHILE = 28;
-  public static final int PR_FLOAT = 17;
-  public static final int IGUAL = 38;
+  public static final int PR_ENDIF = 26;
+  public static final int PR_IF = 24;
+  public static final int PR_ELSE = 25;
+  public static final int PR_ENDDECLARE = 21;
+  public static final int PR_WHILE = 30;
+  public static final int PR_FLOAT = 36;
+  public static final int IGUAL = 19;
   public static final int SUMA = 6;
-  public static final int CONST_FLOAT = 32;
+  public static final int CONST_FLOAT = 38;
   public static final int ASSIGN = 3;
   public static final int ID = 2;
   public static final int EOF = 0;
-  public static final int PR_PROGRAM = 25;
-  public static final int MAYOROIGUAL = 35;
+  public static final int PR_PROGRAM = 28;
+  public static final int MAYOROIGUAL = 16;
   public static final int error = 1;
-  public static final int COMA = 11;
-  public static final int MENOR = 34;
-  public static final int PR_STRING = 18;
-  public static final int PR_DECLARE = 10;
+  public static final int COMA = 10;
+  public static final int MENOR = 15;
+  public static final int PR_STRING = 35;
+  public static final int PR_DECLARE = 20;
   public static final int DIVI = 8;
-  public static final int CORCHC = 13;
-  public static final int MENOROIGUAL = 36;
-  public static final int CORCHA = 12;
-  public static final int MAYOR = 33;
-  public static final int PR_WRITE = 24;
-  public static final int CONST_STRING = 31;
+  public static final int CORCHC = 12;
+  public static final int MENOROIGUAL = 17;
+  public static final int CORCHA = 11;
+  public static final int MAYOR = 14;
+  public static final int PR_WRITE = 27;
+  public static final int CONST_STRING = 37;
   public static final int MULTI = 9;
-  public static final int PR_ENDWHILE = 29;
-  public static final int CONST_INT = 16;
+  public static final int PR_ENDWHILE = 31;
+  public static final int CONST_INT = 33;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -58,15 +58,18 @@ public class sym {
   "RESTA",
   "DIVI",
   "MULTI",
-  "PR_DECLARE",
   "COMA",
   "CORCHA",
   "CORCHC",
+  "PUNTOYCOMA",
+  "MAYOR",
+  "MENOR",
+  "MAYOROIGUAL",
+  "MENOROIGUAL",
+  "DISTINTO",
+  "IGUAL",
+  "PR_DECLARE",
   "PR_ENDDECLARE",
-  "PR_INT",
-  "CONST_INT",
-  "PR_FLOAT",
-  "PR_STRING",
   "PR_AND",
   "PR_OR",
   "PR_IF",
@@ -75,18 +78,15 @@ public class sym {
   "PR_WRITE",
   "PR_PROGRAM",
   "PR_ENDPROGRAM",
-  "PUNTOYCOMA",
   "PR_WHILE",
   "PR_ENDWHILE",
   "PR_PROMR",
+  "CONST_INT",
+  "PR_INT",
+  "PR_STRING",
+  "PR_FLOAT",
   "CONST_STRING",
-  "CONST_FLOAT",
-  "MAYOR",
-  "MENOR",
-  "MAYOROIGUAL",
-  "MENOROIGUAL",
-  "DISTINTO",
-  "IGUAL"
+  "CONST_FLOAT"
   };
 }
 

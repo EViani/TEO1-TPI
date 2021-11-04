@@ -348,64 +348,7 @@ public class Lexico implements java_cup.runtime.Scanner {
   private int zzFinalHighSurrogate = 0;
 
   /* user code: */
-	/*Entero 16 Bits*/
-	private final int max_int = Short.MAX_VALUE;
-	/*real 32 bits*/
-	private final float max_float = Float.MAX_VALUE;
-	/*constantes string no mayor a 30 caracteres*/
-	 private final int max_string = 32; /* 32 YA QUE CUENTA LAS COMILLAS*/
-    private ArrayList<Lexema> Lexemas = new ArrayList<>();
-    private ArrayList<Simbolos> simbolo = new ArrayList<>();
-    private ArrayList<String> error = new ArrayList<>();
-	
-	private void controlString(String s){
-		if (s.length()> max_string ){
-			setError(String.format("Tamanio de string superior a 30, tamanio actual: %d En linea %d %n",(s.length()-2),yyline+1));
-		}	
-	}
-	
-	private void controlReal(String s){
-		float r = Float.parseFloat(s);
-		if(r < 0 || r> max_float){
-			setError(String.format("Valor real fuera de rango %d - %d , valor actual: %d En linea %d %n",0,max_float,r,yyline+1));
-		}
-	}
-	
-	private void controlEntero(String s){
-		int i =Integer.parseInt(s);
-	 	if(i < 0 || i > max_int){
-           setError(String.format("Valor Entero fuera de rango %d - %d, valor actual: %d En linea %d %n",0,max_int, i,yyline+1));
-        }
-	}
-	
-	private void setError(String s ){
-		error.add(s);
-	}
-	
-	private void setLexemas(String l,String t){
-		Lexemas.add(new Lexema(l,t));
-	}
-	
-	public String getLexemas(){
-		String s ="";
-		for(Lexema l:Lexemas) {
-			s +=String.format("Token %s, encontrado Lexema %s %n",l.getToken(),l.getLexema());
-		}
-		return s;
-	};
-	
-	private void setSimbolos(String l, String t){
-		simbolo.add(new Simbolos(l,t));
-	}
-	
-	
-	public ArrayList<Simbolos> getSimbolos(){
-		return simbolo;
-	};
-	
-	public ArrayList<String> getError(){
-		return error;
-	}
+
 
 
 
@@ -797,7 +740,7 @@ public class Lexico implements java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { setError("Caracter no permitido: <" + yytext() + "> en la linea " + yyline);
+            { /*return new Symbol(sym.ERROR,yyline()); */
             } 
             // fall through
           case 40: break;
@@ -817,8 +760,7 @@ public class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 43: break;
           case 5: 
-            { controlEntero(yytext());
-				return new Symbol(sym.CONST_INT,yytext());
+            { return new Symbol(sym.CONST_INT,yytext());
             } 
             // fall through
           case 44: break;
@@ -888,8 +830,7 @@ public class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 57: break;
           case 19: 
-            { controlReal(yytext()); 
-               return new Symbol(sym.CONST_FLOAT,yytext());
+            { return new Symbol(sym.CONST_FLOAT,yytext());
             } 
             // fall through
           case 58: break;
@@ -914,8 +855,7 @@ public class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 62: break;
           case 24: 
-            { controlString(yytext()); 
-				return new Symbol(sym.CONST_STRING,yytext());
+            { return new Symbol(sym.CONST_STRING,yytext());
             } 
             // fall through
           case 63: break;

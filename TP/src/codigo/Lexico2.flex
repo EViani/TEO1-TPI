@@ -16,64 +16,7 @@ import java.util.ArrayList;
 
 
 %{
-	/*Entero 16 Bits*/
-	private final int max_int = Short.MAX_VALUE;
-	/*real 32 bits*/
-	private final float max_float = Float.MAX_VALUE;
-	/*constantes string no mayor a 30 caracteres*/
-	 private final int max_string = 32; /* 32 YA QUE CUENTA LAS COMILLAS*/
-    private ArrayList<Lexema> Lexemas = new ArrayList<>();
-    private ArrayList<Simbolos> simbolo = new ArrayList<>();
-    private ArrayList<String> error = new ArrayList<>();
-	
-	private void controlString(String s){
-		if (s.length()> max_string ){
-			setError(String.format("Tamanio de string superior a 30, tamanio actual: %d En linea %d %n",(s.length()-2),yyline+1));
-		}	
-	}
-	
-	private void controlReal(String s){
-		float r = Float.parseFloat(s);
-		if(r < 0 || r> max_float){
-			setError(String.format("Valor real fuera de rango %d - %d , valor actual: %d En linea %d %n",0,max_float,r,yyline+1));
-		}
-	}
-	
-	private void controlEntero(String s){
-		int i =Integer.parseInt(s);
-	 	if(i < 0 || i > max_int){
-           setError(String.format("Valor Entero fuera de rango %d - %d, valor actual: %d En linea %d %n",0,max_int, i,yyline+1));
-        }
-	}
-	
-	private void setError(String s ){
-		error.add(s);
-	}
-	
-	private void setLexemas(String l,String t){
-		Lexemas.add(new Lexema(l,t));
-	}
-	
-	public String getLexemas(){
-		String s ="";
-		for(Lexema l:Lexemas) {
-			s +=String.format("Token %s, encontrado Lexema %s %n",l.getToken(),l.getLexema());
-		}
-		return s;
-	};
-	
-	private void setSimbolos(String l, String t){
-		simbolo.add(new Simbolos(l,t));
-	}
-	
-	
-	public ArrayList<Simbolos> getSimbolos(){
-		return simbolo;
-	};
-	
-	public ArrayList<String> getError(){
-		return error;
-	}
+
 
 %}
 
@@ -175,15 +118,12 @@ COMEN = {COMEA}({LETRAS}|{NUMERO}|{SIMBOLO}|{ESPACIO}|{SALTO})* ({COMEA}({LETRAS
 {ASSIGN}		{return new Symbol(sym.ASSIGN,yytext());}
 
 
-{CONST_INT}		{controlEntero(yytext());
-				return new Symbol(sym.CONST_INT,yytext());}
+{CONST_INT}		{return new Symbol(sym.CONST_INT,yytext());}
 
 
-{CONST_STRING} {controlString(yytext()); 
-				return new Symbol(sym.CONST_STRING,yytext());} 
+{CONST_STRING} {return new Symbol(sym.CONST_STRING,yytext());} 
 
-{CONST_FLOAT}	{controlReal(yytext()); 
-               return new Symbol(sym.CONST_FLOAT,yytext());}
+{CONST_FLOAT}	{return new Symbol(sym.CONST_FLOAT,yytext());}
 
 
 {COMA} {return new Symbol(sym.COMA,yytext());}
@@ -211,5 +151,5 @@ COMEN = {COMEA}({LETRAS}|{NUMERO}|{SIMBOLO}|{ESPACIO}|{SALTO})* ({COMEA}({LETRAS
 
 }
 
-[^]		{setError("Caracter no permitido: <" + yytext() + "> en la linea " + yyline); }
+[^]		{/*return new Symbol(sym.ERROR,yyline()); */ }
 <<EOF>> {return new Symbol(sym.EOF);}

@@ -9,6 +9,7 @@ import javax.swing.JTextArea;
 
 import codigo.Lexico;
 import codigo.Simbolos;
+import codigo.parser;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -135,22 +136,23 @@ public class VG {
 				try {
 					FileReader f = new FileReader("codigo.txt");
 					Lexico lex = new Lexico(f);
+					parser sintac = new parser(lex);
 					try {
-						lex.next_token();
-						if (lex.getError().size()>0) {
+						sintac.parse();
+						if (sintac.getError().size()>0) {
 							String s="ERRORES \n";
-							for(String er:lex.getError()) {
+							for(String er:sintac.getError()) {
 								s+=er+"\n";
 							}
 							salida.setForeground(Color.RED);
 							salida.setText(s);
 						} else {
 							salida.setForeground(Color.BLACK);
-							salida.setText(lex.getLexemas());
+							salida.setText(sintac.getReglas());
 							try {
 								fw = new FileWriter("ts.txt");
 								fw.write("NOMBRE | TOKEN | TIPO | VALOR | LONG \n");
-								for (Simbolos si:lex.getSimbolos()) {
+								for (Simbolos si:sintac.getSimbolos()) {
 									fw.write(si.toString());
 								}
 								fw.close();
@@ -169,8 +171,8 @@ public class VG {
 					ex.printStackTrace();
 				}
 				
-				
-			}
+				}	
+			
 		});
 		btnNewButton_1.setBounds(494, 46, 89, 23);
 		frmTeoGrupo.getContentPane().add(btnNewButton_1);
