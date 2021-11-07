@@ -2,26 +2,15 @@ NOMBRE | TOKEN | TIPO | VALOR | LONG
 a1 | ID | ID |  | 0 | 
 b1 | ID | ID |  | 0 | 
 s1 | ID | ID |  | 0 | 
-a1 | ID | ID |  | 0 | 
 _10 | CONST_INT | -- | 10 | 0 | 
-b1 | ID | ID |  | 0 | 
 _1.5 | CONST_FLOAT | -- | 1.5 | 0 | 
-s1 | ID | ID |  | 0 | 
 _TEO1 | CONST_STRING | -- | TEO1 | 4 | 
-a1 | ID | ID |  | 0 | 
 _50 | CONST_INT | -- | 50 | 0 | 
 _25 | CONST_INT | -- | 25 | 0 | 
 a25 | ID | ID |  | 0 | 
 _PEDRITO | CONST_STRING | -- | PEDRITO | 7 | 
-b1 | ID | ID |  | 0 | 
 _2.0 | CONST_FLOAT | -- | 2.0 | 0 | 
-a1 | ID | ID |  | 0 | 
-b1 | ID | ID |  | 0 | 
-s1 | ID | ID |  | 0 | 
 _5 | CONST_INT | -- | 5 | 0 | 
 a3 | ID | ID |  | 0 | 
 c1 | ID | ID |  | 0 | 
-a1 | ID | ID |  | 0 | 
-_50 | CONST_INT | -- | 50 | 0 | 
 _3 | CONST_INT | -- | 3 | 0 | 
-_25 | CONST_INT | -- | 25 | 0 | 

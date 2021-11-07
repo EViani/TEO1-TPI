@@ -68,7 +68,32 @@ import java.util.ArrayList;
 	};
 	
 	private void setSimbolos(String l, String t){
-		simbolo.add(new Simbolos(l,t));
+		boolean flag;
+		flag = true;
+		if(simbolo.size()>0){
+			for (Simbolos s:simbolo){
+				switch  (t){
+					case "ID" :
+						if(s.getNombre().equals(l)){
+							flag=false;
+						}
+						break;
+					case "CONST_STRING":
+						if(s.getNombre().equals(l.substring(1,l.length()-1))){
+							flag=false;
+						}
+						break;
+					default :
+						if(s.getValor().equals(l)){
+							flag=false;
+						}
+						break;
+				}
+			}
+		}
+		if (flag){
+			simbolo.add(new Simbolos(l,t));
+		}
 	}
 	
 	
