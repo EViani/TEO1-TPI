@@ -1,6 +1,8 @@
 NOMBRE | TOKEN | TIPO | VALOR | LONG 
+a3 | ID | INT |  | 0 | 
+c1 | ID | FLOAT |  | 0 | 
 b1 | ID | INT |  | 0 | 
-a1 | ID | FLOAT |  | 0 | 
+a1 | ID | INT |  | 0 | 
 s1 | ID | STRING |  | 0 | 
 _10 | CONST_INT |  | 10 | 0 | 
 _1.5 | CONST_FLOAT |  | 1.5 | 0 | 
@@ -10,6 +12,4 @@ _25 | CONST_INT |  | 25 | 0 |
 _PEDRITO | CONST_STRING |  | PEDRITO | 7 | 
 _2.0 | CONST_FLOAT |  | 2.0 | 0 | 
 _5 | CONST_INT |  | 5 | 0 | 
-_50 | CONST_INT |  | 50 | 0 | 
 _3 | CONST_INT |  | 3 | 0 | 
-_25 | CONST_INT |  | 25 | 0 | 

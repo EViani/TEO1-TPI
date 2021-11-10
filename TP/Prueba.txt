@@ -3,28 +3,29 @@
 	//* 10//*PEP*// *//
 
 DECLARE.SECTION
-    [a1,b1,c1] ::= [INT,FLOAT]
+    [a1,b1] ::= [INT,FLOAT]
     [s1] ::= [STRING]
 ENDDECLARE.SECTION
 
 PROGRAM.SECTION
     a1::=10;
     b1::=1.5;
-    s1 ::= "TEO1"
-    WHILE ((a1<50) & (25!=10)|| s1 = "TEO")
+    s1 ::= "TEO1";
+    WHILE (a1<50 & 25!=b1)
         WRITE "PEDRITO";
-        IF b1<2.0 THEN
+        IF (b1<2.0 )
             WRITE a1;
         ELSE
             WRITE b1;
-        ENDIF
-    ENDWHILE
+        ENDIF;
+    ENDWHILE;
     WRITE s1; //*MUESTRO TEO1*//
     //* 10+5//* NO ANDA *// *//
-    if 5>=3
-    c1 ::=  PROMR(a1;<=; [50,3,25])
+    IF (5>=a3)
+   		c1 ::=  PROMR(a1;<=; [50,3,25]);
+    ENDIF;
 ENDPROGRAM.SECTION
 
-
-//*PEPES*// 25
+//*PEPES*//
 	//* 10+20//*PEP*// *// 
+

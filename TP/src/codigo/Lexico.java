@@ -740,7 +740,7 @@ public class Lexico implements java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { /*return new Symbol(sym.ERROR,yyline()); */
+            { return new Symbol(sym.error,yytext());
             } 
             // fall through
           case 40: break;

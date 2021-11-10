@@ -2,15 +2,11 @@ package codigo;
 
 import java_cup.runtime.*;
 import java.util.ArrayList;
+import java.util.List;
 
 parser code
 {:
-    /**Metodo al que se llama automaticamente ante algun error sintactico.*/
-    public void syntax_error(Symbol s){
-        System.out.println("Error en la linea " + (s.right+1) + " columna " + s.left + ". "
-            + s + " no reconocido. valor " + s.value );
-    }
-	 private ArrayList<String> regla = new ArrayList<>();
+ 	private ArrayList<String> regla = new ArrayList<>();
 	 private ArrayList<Simbolos> simbolo = new ArrayList<>();
 	 
 	 /*Entero 16 Bits*/
@@ -19,6 +15,18 @@ parser code
 	private final float max_float = Float.MAX_VALUE;
 	/*constantes string no mayor a 30 caracteres*/
 	 private final int max_string = 32; /* 32 YA QUE CUENTA LAS COMILLAS*/
+	 private ArrayList<String> error = new ArrayList<>();
+	 
+    /**Metodo al que se llama automaticamente ante algun error sintactico.*/
+    public void syntax_error(Symbol s){
+       setError("Error en la linea " + (s.right+1) + " columna " + s.left + ". "
+            + s + " no reconocido. valor " + s.value );
+    }
+    
+	public void unrecovered_syntax_error(Symbol s){
+		
+	} 
+	
 	 
 	 private void setRegla(String r){
 		regla.add(r);
@@ -33,7 +41,32 @@ parser code
 	};
 	
 	private void setSimbolos(String l, String t, String ti){
-		simbolo.add(new Simbolos(l,t,ti));
+		boolean flag;
+		flag = true;
+		if(simbolo.size()>0){
+			for (Simbolos s:simbolo){
+				switch  (t){
+					case "ID" :
+						if(s.getNombre().equals(l)){
+							flag=false;
+						}
+						break;
+					case "CONST_STRING":
+						if(s.getNombre().equals(l.substring(1,l.length()-1))){
+							flag=false;
+						}
+						break;
+					default :
+						if(s.getValor().equals(l)){
+							flag=false;
+						}
+						break;
+				}
+			}
+		}
+		if (flag){
+			simbolo.add(new Simbolos(l,t,ti));
+		}
 	}
 	
 	
@@ -62,13 +95,25 @@ parser code
         }
 	}
 	
-	private ArrayList<String> error = new ArrayList<>();
+	
 	private void setError(String s ){
 		error.add(s);
 	}
 	
 	public ArrayList<String> getError(){
 		return error;
+	}
+	
+	private void declareID(String i){
+		boolean flag=false;
+		for (Simbolos s:simbolo){
+			if(s.getToken()=="ID" && s.getNombre().equals(i)){
+				flag=true;
+			}
+		}
+		if(!flag){
+			setError("ERROR ID no declarado " + i);
+		}
 	}
 	
 :}
@@ -104,58 +149,59 @@ tipo ::= PR_INT:ti  {:setRegla("[Regla 7] PR_INT"); RESULT = ti;:}
 		| PR_FLOAT:ti {:setRegla("[Regla 8] PR_FLOAT"); RESULT = ti;:} 
 		| PR_STRING:ti {:setRegla("[Regla 9] " + ti);RESULT = ti;:};
 
-sentencias ::= PR_PROGRAM sentencia PR_ENDPROGRAM{:System.out.println("[Regla 10] sentencias"); :};
-sentencia ::= sentencia linea{:System.out.println("[Regla 11] sentencia"); :};
-sentencia ::= linea {:System.out.println("[Regla 12] sentencia"); :};
-linea ::= asignacion {:System.out.println("[Regla 13] linea asignacion"); :} 
-		| mostrar {:System.out.println("[Regla 14] linea mostrar"); :} 
-		| if {:System.out.println("[Regla 15] linea if"); :} 
-		| while {:System.out.println("[Regla 16] linea while"); :};
+sentencias ::= PR_PROGRAM sentencia PR_ENDPROGRAM{:setRegla("[Regla 10] sentencias"); :};
+sentencia ::= sentencia linea{:setRegla("[Regla 11] sentencia"); :};
+sentencia ::= linea {:setRegla("[Regla 12] sentencia"); :};
+linea ::= asignacion {:setRegla("[Regla 13] linea asignacion"); :} 
+		| mostrar {:setRegla("[Regla 14] linea mostrar"); :} 
+		| if {:setRegla("[Regla 15] linea if"); :} 
+		| while {:setRegla("[Regla 16] linea while"); :};
 		
-asignacion ::= ID:i ASSIGN valor PUNTOYCOMA {:System.out.println("[Regla 17] asignacion " + i); RESULT = i;:};
-valor ::= CONST_STRING:s {:System.out.println("[Regla 18] valor CONST_STRING"); controlString((String) s); setSimbolos((String) s,"CONST_STRING",""); :} 
-		| expresion {:System.out.println("[Regla 19] valor expresion"); :};
-mostrar ::= PR_WRITE constante PUNTOYCOMA {:System.out.println("[Regla 20] mostra constante"); :}
-		| PR_WRITE ID PUNTOYCOMA {:System.out.println("[Regla 21] mostra ID"); :};
+asignacion ::= ID:i ASSIGN valor PUNTOYCOMA {:declareID((String) i); setRegla("[Regla 17] asignacion " + i); RESULT = i;:} 
+				| error ID {::} ;
+valor ::= CONST_STRING:s {:setRegla("[Regla 18] valor CONST_STRING"); controlString((String) s); setSimbolos((String) s,"CONST_STRING",""); :} 
+		| expresion {:setRegla("[Regla 19] valor expresion"); :};
+mostrar ::= PR_WRITE constante PUNTOYCOMA {:setRegla("[Regla 20] mostra constante"); :}
+		| PR_WRITE ID:i PUNTOYCOMA {: declareID((String) i); setRegla("[Regla 21] mostra ID"); RESULT=i; :};
 
-expresionlog ::=  comp PR_AND comp {:System.out.println("[Regla 22] expresionlog PR_AND"); :}
-		|comp PR_OR comp {:System.out.println("[Regla 23] expresionlog PR_OR"); :} 
-		|comp {:System.out.println("[Regla 24] comp"); :};
-comp ::= expresion compara expresion {:System.out.println("[Regla 25] expresion compara expresion"); :} 
-		| expresion compara CONST_STRING:s {:System.out.println("[Regla 26] expresion compara CONST_STRING"); controlString((String) s); setSimbolos((String) s,"CONST_STRING",""); :} 
-		| CONST_STRING:s compara expresion {:System.out.println("[Regla 27] CONST_STRING compara expresion"); controlString((String) s); setSimbolos((String) s,"CONST_STRING",""); :};
-compara ::= MAYOR {:System.out.println("[Regla 28] MAYOR"); :}
-		| MENOR {:System.out.println("[Regla 29] MENOR"); :}
-		| IGUAL {:System.out.println("[Regla 30] IGUAL"); :}
-		| DISTINTO {:System.out.println("[Regla 31] DISTINTO"); :}
-		| MENOROIGUAL {:System.out.println("[Regla 32] MENOROIGUAL"); :}
-		| MAYOROIGUAL {:System.out.println("[Regla 33] MAYOROIGUAL"); :};
+expresionlog ::=  comp PR_AND comp {:setRegla("[Regla 22] expresionlog PR_AND"); :}
+		|comp PR_OR comp {:setRegla("[Regla 23] expresionlog PR_OR"); :} 
+		|comp {:setRegla("[Regla 24] comp"); :};
+comp ::= expresion compara expresion {:setRegla("[Regla 25] expresion compara expresion"); :} 
+		| expresion compara CONST_STRING:s {:setRegla("[Regla 26] expresion compara CONST_STRING"); controlString((String) s); setSimbolos((String) s,"CONST_STRING",""); :} 
+		| CONST_STRING:s compara expresion {:setRegla("[Regla 27] CONST_STRING compara expresion"); controlString((String) s); setSimbolos((String) s,"CONST_STRING",""); :};
+compara ::= MAYOR {:setRegla("[Regla 28] MAYOR"); :}
+		| MENOR {:setRegla("[Regla 29] MENOR"); :}
+		| IGUAL {:setRegla("[Regla 30] IGUAL"); :}
+		| DISTINTO {:setRegla("[Regla 31] DISTINTO"); :}
+		| MENOROIGUAL {:setRegla("[Regla 32] MENOROIGUAL"); :}
+		| MAYOROIGUAL {:setRegla("[Regla 33] MAYOROIGUAL"); :};
 
-if ::= PR_IF PARENA expresionlog PARENC sentencia PR_ENDIF PUNTOYCOMA {:System.out.println("[Regla 34] IF"); :} 
-		| PR_IF PARENA expresionlog PARENC sentencia PR_ELSE sentencia PR_ENDIF PUNTOYCOMA {:System.out.println("[Regla 35] IF ELSE"); :};
+if ::= PR_IF PARENA expresionlog PARENC sentencia PR_ENDIF PUNTOYCOMA {:setRegla("[Regla 34] IF"); :} 
+		| PR_IF PARENA expresionlog PARENC sentencia PR_ELSE sentencia PR_ENDIF PUNTOYCOMA {:setRegla("[Regla 35] IF ELSE"); :};
 	
-while ::= PR_WHILE PARENA expresionlog PARENC sentencia PR_ENDWHILE PUNTOYCOMA {:System.out.println("[Regla 36] WHILE"); :};
-promr ::= PR_PROMR PARENA ID PUNTOYCOMA MENOROIGUAL PUNTOYCOMA listaval PARENC {:System.out.println("[Regla 37] promr"); :};
-listaval ::= CORCHA CORCHC {:System.out.println("[Regla 38] listaval vacia"); :};
-listaval ::= CORCHA valores CORCHC {:System.out.println("[Regla 39] listaval"); :};
-valores ::= valores COMA CONST_INT:i   {:System.out.println("[Regla 40] valor CONST_INT"); controlEntero((String) i); setSimbolos((String) i,"CONST_INT",""); :};
-valores ::= CONST_INT:i {:System.out.println("[Regla 41] valor CONST_INT"); controlEntero((String)i); setSimbolos((String) i,"CONST_INT","");:};
+while ::= PR_WHILE PARENA expresionlog PARENC sentencia PR_ENDWHILE PUNTOYCOMA {:setRegla("[Regla 36] WHILE"); :};
+promr ::= PR_PROMR PARENA ID PUNTOYCOMA MENOROIGUAL PUNTOYCOMA listaval PARENC {:setRegla("[Regla 37] promr"); :};
+listaval ::= CORCHA CORCHC {:setRegla("[Regla 38] listaval vacia"); :};
+listaval ::= CORCHA valores CORCHC {:setRegla("[Regla 39] listaval"); :};
+valores ::= valores COMA CONST_INT:i   {:setRegla("[Regla 40] valor CONST_INT"); controlEntero((String) i); setSimbolos((String) i,"CONST_INT",""); :};
+valores ::= CONST_INT:i {:setRegla("[Regla 41] valor CONST_INT"); controlEntero((String)i); setSimbolos((String) i,"CONST_INT","");:};
 
 
-constante ::= CONST_INT:i {:System.out.println("[Regla 42] CONST_INT");  controlEntero((String)i); setSimbolos((String) i,"CONST_INT",""); :} 
-		| CONST_STRING:s {:System.out.println("[Regla 43] CONST_STRING"); controlString((String )s); setSimbolos((String) s,"CONST_STRING",""); :} 
-		| CONST_FLOAT:f {:System.out.println("[Regla 44] CONST_FLOAT"); controlReal((String) f); setSimbolos((String) f,"CONST_FLOAT",""); :};   
-expresion ::= expresion SUMA termino {:System.out.println("[Regla 45] E+T"); :} 
-		| expresion RESTA termino {:System.out.println("[Regla 46] E-T"); :} 
-		| termino {:System.out.println("[Regla 47] T"); :};
-termino ::= termino MULTI factor {:System.out.println("[Regla 48] T*F"); :} 
-		| termino DIVI factor {:System.out.println("[Regla 49] T/F"); :} 
-		| factor{:System.out.println("[Regla 50] F"); :};
-factor ::= CONST_INT:i {:System.out.println("[Regla 51] F CONST_INT " + i ); RESULT = i; controlEntero((String)i); setSimbolos((String) i,"CONST_INT","");:} 
-		| CONST_FLOAT:f {:System.out.println( "[Regla 52] F CONST_FLOAT"); controlReal((String) f);  setSimbolos((String) f,"CONST_FLOAT","");:} 
-		| ID {:System.out.println("[Regla 53] F ID"); :}
-	 	| PARENA factor PARENC{:System.out.println("[Regla 54] (F)"); :}
-	 	| promr {:System.out.println("[Regla 55] promr"); :}; 
+constante ::= CONST_INT:i {:setRegla("[Regla 42] CONST_INT");  controlEntero((String)i); setSimbolos((String) i,"CONST_INT",""); :} 
+		| CONST_STRING:s {:setRegla("[Regla 43] CONST_STRING"); controlString((String )s); setSimbolos((String) s,"CONST_STRING",""); :} 
+		| CONST_FLOAT:f {:setRegla("[Regla 44] CONST_FLOAT"); controlReal((String) f); setSimbolos((String) f,"CONST_FLOAT",""); :};   
+expresion ::= expresion SUMA termino {:setRegla("[Regla 45] E+T"); :} 
+		| expresion RESTA termino {:setRegla("[Regla 46] E-T"); :} 
+		| termino {:setRegla("[Regla 47] T"); :};
+termino ::= termino MULTI factor {:setRegla("[Regla 48] T*F"); :} 
+		| termino DIVI factor {:setRegla("[Regla 49] T/F"); :} 
+		| factor{:setRegla("[Regla 50] F"); :};
+factor ::= CONST_INT:i {:setRegla("[Regla 51] F CONST_INT " + i ); RESULT = i; controlEntero((String)i); setSimbolos((String) i,"CONST_INT","");:} 
+		| CONST_FLOAT:f {:setRegla( "[Regla 52] F CONST_FLOAT"); controlReal((String) f);  setSimbolos((String) f,"CONST_FLOAT","");:} 
+		| ID:i {: declareID((String) i); setRegla("[Regla 53] F ID " + i); RESULT=i; :}
+	 	| PARENA factor PARENC{:setRegla("[Regla 54] (F)"); :}
+	 	| promr {:setRegla("[Regla 55] promr"); :}; 
           
              
 
