@@ -13,7 +13,7 @@ PROGRAM.SECTION
     s1 ::= "TEO1";
     WHILE (a1<50 & 25!=b1)
         WRITE "PEDRITO";
-        IF (b1<2.0 )
+        IF (b1>=2.0 )
             WRITE a1;
         ELSE
             WRITE b1;
@@ -26,6 +26,10 @@ PROGRAM.SECTION
     ENDIF;
     IF (1.2< s1)
     	s1::=(2+3);
+    	WRITE "GRUPO 4";
+    	IF (a1 = " " || a3>3)
+    		WRITE 2.5;
+    	ENDIF;
     ENDIF;
 ENDPROGRAM.SECTION
 
