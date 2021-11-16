@@ -15,6 +15,6 @@ _5 | CONST_INT |  | 5 | 0 |
 _3 | CONST_INT |  | 3 | 0 | 
 _1.2 | CONST_FLOAT |  | 1.2 | 0 | 
 _2 | CONST_INT |  | 2 | 0 | 
-_GRUPO.,; 4 | CONST_STRING |  | GRUPO.,; 4 | 10 | 
+_GRUPO.,;@ 4 | CONST_STRING |  | GRUPO.,;@ 4 | 11 | 
 _  | CONST_STRING |  |   | 1 | 
 _2.5 | CONST_FLOAT |  | 2.5 | 0 | 
