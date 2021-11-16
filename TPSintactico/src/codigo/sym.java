@@ -13,6 +13,7 @@ public class sym {
   public static final int PARENA = 4;
   public static final int PR_INT = 34;
   public static final int PUNTOYCOMA = 13;
+  public static final int EXCEP = 39;
   public static final int PR_OR = 23;
   public static final int PR_PROMR = 32;
   public static final int PR_ENDPROGRAM = 29;
@@ -86,7 +87,8 @@ public class sym {
   "PR_STRING",
   "PR_FLOAT",
   "CONST_STRING",
-  "CONST_FLOAT"
+  "CONST_FLOAT",
+  "EXCEP"
   };
 }
 

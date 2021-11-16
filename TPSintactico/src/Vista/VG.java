@@ -86,6 +86,10 @@ public class VG {
 		JLabel lblNewLabel_1 = new JLabel("salida");
 		scrollPane_1.setColumnHeaderView(lblNewLabel_1);
 		
+		NumeroLinea numerolinea;
+		numerolinea = new NumeroLinea(codigo);
+		scrollPane.setRowHeaderView(numerolinea);
+		
 		JButton btnNewButton = new JButton("Cargar Archivo");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

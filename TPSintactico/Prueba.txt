@@ -3,7 +3,7 @@
 	//* 10//*PEP*// *//
 
 DECLARE.SECTION
-    [a1,b1] ::= [INT,FLOAT]
+    [a1,b1,a3,c1] ::= [INT,FLOAT,INT,INT]
     [s1] ::= [STRING]
 ENDDECLARE.SECTION
 

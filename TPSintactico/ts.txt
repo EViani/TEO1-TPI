@@ -1,6 +1,6 @@
 NOMBRE | TOKEN | TIPO | VALOR | LONG 
-a3 | ID | INT |  | 0 | 
-c1 | ID | FLOAT |  | 0 | 
+c1 | ID | INT |  | 0 | 
+a3 | ID | FLOAT |  | 0 | 
 b1 | ID | INT |  | 0 | 
 a1 | ID | INT |  | 0 | 
 s1 | ID | STRING |  | 0 | 
