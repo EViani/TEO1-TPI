@@ -213,7 +213,7 @@ termino ::= termino MULTI factor {:setRegla("[Regla 48] T*F"); :}
 factor ::= CONST_INT:i {:setRegla("[Regla 51] CONST_INT es F" + i ); RESULT = i; controlEntero((String)i); setSimbolos((String) i,"CONST_INT","");:} 
 		| CONST_FLOAT:f {:setRegla( "[Regla 52] CONST_FLOAT es F"); controlReal((String) f);  setSimbolos((String) f,"CONST_FLOAT","");:} 
 		| ID:i {: declareID((String) i); setRegla("[Regla 53] ID es F " + i); RESULT=i; :}
-	 	| PARENA factor PARENC{:setRegla("[Regla 54] (F)"); :}
+	 	| PARENA expresion PARENC{:setRegla("[Regla 54] (E)"); :}
 	 	| promr {:setRegla("[Regla 55]  promr es F"); :}; 
              
 

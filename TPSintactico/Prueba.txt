@@ -24,6 +24,9 @@ PROGRAM.SECTION
     IF (5>=a3)
    		c1 ::=  PROMR(a1;<=; [50,3,25]);
     ENDIF;
+    IF (1.2< s1)
+    	s1::=(2+3);
+    ENDIF;
 ENDPROGRAM.SECTION
 
 //*PEPES*//
