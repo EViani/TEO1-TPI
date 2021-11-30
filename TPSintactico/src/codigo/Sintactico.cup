@@ -5,17 +5,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 parser code
-{:
+{:	
+	//lista donde se almacenaran las reglas por las que se paso
  	private ArrayList<String> regla = new ArrayList<>();
-	 private ArrayList<Simbolos> simbolo = new ArrayList<>();
-	 
+	//lista donde se almacenaran la tabla de simbolos
+	private ArrayList<Simbolos> simbolo = new ArrayList<>();
+	//lista para almacenar temporalmente los tipos, para so enlace con los IDs
+	private  ArrayList<String> tipos = new ArrayList<String>();	 
+
 	 /*Entero 16 Bits*/
 	private final int max_int = Short.MAX_VALUE;
 	/*real 32 bits*/
 	private final float max_float = Float.MAX_VALUE;
 	/*constantes string no mayor a 30 caracteres*/
 	 private final int max_string = 32; /* 32 YA QUE CUENTA LAS COMILLAS*/
+	//Lista donde se almacenaran los errors
 	 private ArrayList<String> error = new ArrayList<>();
+	//variable para conocer el ultimo simbolo enlazado con un tipo
+	private int maxS =0;
 	 
     /**Metodo al que se llama automaticamente ante algun error sintactico.*/
     public void syntax_error(Symbol s){
@@ -31,7 +38,7 @@ parser code
 
 	
 	 
- private void setRegla(String r){
+ 	private void setRegla(String r){
 		regla.add(r);
 	}
 	
@@ -119,8 +126,28 @@ parser code
 			setError("ERROR ID no declarado " + i);
 		}
 	}
-	
 
+	//Agregando tipo a una lista
+	private void agregarTipo(String t){
+		//se agrega un tipo a la lista de tipos
+		tipos.add(t);	
+	}	
+
+	//se enlaza cada tipo a su ID
+	private void tipoID(){
+		//Los tipos son ingresados por orden de aparicion
+		//por lo que se debera recorrer la lista de tipos de atras hacia adelante
+		int t = tipos.size()-1;
+		for (int i=maxS; i <simbolo.size();i++){
+			simbolo.get(i).setTipo(tipos.get(t));
+			t--;
+		}
+		//se almacena la posicion del ultimo simbolo enlazado
+		maxS=simbolo.size();
+		//se limpia la lista de tipos, para ahorrar recurso
+		tipos.clear();
+	}
+	
 :}
 
 action code
@@ -139,7 +166,7 @@ non terminal constante, program, asignacion, valor, expresion, termino, factor;
 non terminal sentencias, sentencia, mostrar, compara, comp, expresionlog, if, while, linea, promr, valores, listaval;
 
 
-start with pgm;
+start with declare;
 
 pgm ::=  program {: setRegla("pgm Regla 0 Compila correctamente llegando al simbolo start"); :};
 program ::= declare sentencias {: setRegla(" [Regla 1] declare programa"); :};
@@ -149,8 +176,8 @@ declare ::= PR_DECLARE lista PR_ENDDECLARE {: setRegla("[Regla 2] seccion declar
 			
 lista ::= listavariable {:setRegla("[Regla 3] listavariable");:};
 lista ::= listavariable lista {:setRegla("[Regla 4] lista");:};
-listavariable ::= CORCHA ID:i assigvar tipo:ti CORCHC  {: RESULT = i; RESULT = ti; setRegla("[Regla 5] listavariable apertura " + i + " - " + ti); setSimbolos((String)i,"ID",(String) ti);:};
-assigvar ::= COMA ID:i assigvar tipo:ti COMA {: RESULT = i; RESULT = ti; setRegla("[Regla 6] assigvar " + i +" - " + ti ); setSimbolos((String)i,"ID",(String) ti); :};
+listavariable ::= CORCHA ID:i assigvar tipo:ti CORCHC  {: RESULT = i; RESULT = ti; setRegla("[Regla 5] listavariable apertura " + i + " - " + ti); setSimbolos((String)i,"ID",""); agregarTipo((String) ti); tipoID(); :};
+assigvar ::= COMA ID:i assigvar tipo:ti COMA {: RESULT = i; RESULT = ti; setRegla("[Regla 6] assigvar " + i +" - " + ti ); setSimbolos((String)i,"ID"," "); agregarTipo((String) ti);:};
 assigvar ::= CORCHC ASSIGN CORCHA {: setRegla("[Regla 6] assigvar fin ");:};
 tipo ::= PR_INT:ti  {:setRegla("[Regla 7] PR_INT"); RESULT = ti;:} 
 		| PR_FLOAT:ti {:setRegla("[Regla 8] PR_FLOAT"); RESULT = ti;:} 
@@ -217,7 +244,3 @@ factor ::= CONST_INT:i {:setRegla("[Regla 51] CONST_INT es F" + i ); RESULT = i;
 	 	| PARENA expresion PARENC{:setRegla("[Regla 54] (E)"); :}
 	 	| promr {:setRegla("[Regla 55]  promr es F"); :}; 
              
-
-
-
-
