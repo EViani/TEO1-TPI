@@ -61,7 +61,10 @@ public class Simbolos {
 	public int getLongitud() {
 		return longitud;
 	}
-
+	
+	public void setTipo(String t) {
+		this.tipo=t;
+	}
 	@Override
 	public String toString() {
 		String s ="";
