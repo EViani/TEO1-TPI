@@ -52,6 +52,7 @@ parser code
 					case "ID" :
 						if(s.getNombre().equals(l)){
 							flag=false;
+							setError(String.format("ID: %s ya declarado mas de una vez",  l));
 						}
 						break;
 					case "CONST_STRING":
