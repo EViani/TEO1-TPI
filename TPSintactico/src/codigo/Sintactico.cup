@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 parser code
-{:	
-	//lista donde se almacenaran las reglas por las que se paso
+{:
+ 	//lista donde se almacenaran las reglas por las que se paso
  	private ArrayList<String> regla = new ArrayList<>();
 	//lista donde se almacenaran la tabla de simbolos
 	private ArrayList<Simbolos> simbolo = new ArrayList<>();
 	//lista para almacenar temporalmente los tipos, para so enlace con los IDs
-	private  ArrayList<String> tipos = new ArrayList<String>();	 
-
+	private  ArrayList<String> tipos = new ArrayList<String>();	
+	 
 	 /*Entero 16 Bits*/
 	private final int max_int = Short.MAX_VALUE;
 	/*real 32 bits*/
@@ -38,7 +38,7 @@ parser code
 
 	
 	 
- 	private void setRegla(String r){
+ private void setRegla(String r){
 		regla.add(r);
 	}
 	
@@ -50,7 +50,7 @@ parser code
 		return s;
 	};
 	
-	private void setSimbolos(String l, String t, String ti){
+	private void setSimbolos(String l, String t){
 		boolean flag;
 		flag = true;
 		if(simbolo.size()>0){
@@ -76,7 +76,7 @@ parser code
 			}
 		}
 		if (flag){
-			simbolo.add(new Simbolos(l,t,ti));
+			simbolo.add(new Simbolos(l,t));
 		}
 	}
 	
@@ -126,7 +126,7 @@ parser code
 			setError("ERROR ID no declarado " + i);
 		}
 	}
-
+	
 	//Agregando tipo a una lista
 	private void agregarTipo(String t){
 		//se agrega un tipo a la lista de tipos
@@ -147,7 +147,7 @@ parser code
 		//se limpia la lista de tipos, para ahorrar recurso
 		tipos.clear();
 	}
-	
+
 :}
 
 action code
@@ -166,7 +166,7 @@ non terminal constante, program, asignacion, valor, expresion, termino, factor;
 non terminal sentencias, sentencia, mostrar, compara, comp, expresionlog, if, while, linea, promr, valores, listaval;
 
 
-start with declare;
+start with pgm;
 
 pgm ::=  program {: setRegla("pgm Regla 0 Compila correctamente llegando al simbolo start"); :};
 program ::= declare sentencias {: setRegla(" [Regla 1] declare programa"); :};
@@ -176,8 +176,8 @@ declare ::= PR_DECLARE lista PR_ENDDECLARE {: setRegla("[Regla 2] seccion declar
 			
 lista ::= listavariable {:setRegla("[Regla 3] listavariable");:};
 lista ::= listavariable lista {:setRegla("[Regla 4] lista");:};
-listavariable ::= CORCHA ID:i assigvar tipo:ti CORCHC  {: RESULT = i; RESULT = ti; setRegla("[Regla 5] listavariable apertura " + i + " - " + ti); setSimbolos((String)i,"ID",""); agregarTipo((String) ti); tipoID(); :};
-assigvar ::= COMA ID:i assigvar tipo:ti COMA {: RESULT = i; RESULT = ti; setRegla("[Regla 6] assigvar " + i +" - " + ti ); setSimbolos((String)i,"ID"," "); agregarTipo((String) ti);:};
+listavariable ::= CORCHA ID:i assigvar tipo:ti CORCHC  {: RESULT = i; RESULT = ti; setRegla("[Regla 5] listavariable apertura " + i + " - " + ti); setSimbolos((String)i,"ID"); agregarTipo((String) ti); tipoID();:};
+assigvar ::= COMA ID:i assigvar tipo:ti COMA {: RESULT = i; RESULT = ti; setRegla("[Regla 6] assigvar " + i +" - " + ti ); setSimbolos((String)i,"ID"); agregarTipo((String)ti);:};
 assigvar ::= CORCHC ASSIGN CORCHA {: setRegla("[Regla 6] assigvar fin ");:};
 tipo ::= PR_INT:ti  {:setRegla("[Regla 7] PR_INT"); RESULT = ti;:} 
 		| PR_FLOAT:ti {:setRegla("[Regla 8] PR_FLOAT"); RESULT = ti;:} 
@@ -195,7 +195,7 @@ linea ::= asignacion {:setRegla("[Regla 13] linea asignacion"); :}
 		| while {:setRegla("[Regla 16] linea while"); :};
 		
 asignacion ::= ID:i ASSIGN valor PUNTOYCOMA {:declareID((String) i); setRegla("[Regla 17] asignacion " + i); RESULT = i;:} ;
-valor ::= CONST_STRING:s {:setRegla("[Regla 18] valor CONST_STRING"); controlString((String) s); setSimbolos((String) s,"CONST_STRING",""); :} 
+valor ::= CONST_STRING:s {:setRegla("[Regla 18] valor CONST_STRING"); controlString((String) s); setSimbolos( (String)s,"CONST_STRING"); :} 
 		| expresion {:setRegla("[Regla 19] valor expresion"); :};
 mostrar ::= PR_WRITE constante PUNTOYCOMA {:setRegla("[Regla 20] mostra constante"); :}
 		| PR_WRITE ID:i PUNTOYCOMA {: declareID((String) i); setRegla("[Regla 21] mostra ID"); RESULT=i; :};
@@ -206,8 +206,8 @@ expresionlog ::=  comp PR_AND comp {:setRegla("[Regla 22] expresionlog PR_AND");
 		| error PR_OR
 		| error PR_AND;
 comp ::= expresion compara expresion {:setRegla("[Regla 25] expresion compara expresion"); :} 
-		| expresion compara CONST_STRING:s {:setRegla("[Regla 26] expresion compara CONST_STRING"); controlString((String) s); setSimbolos((String) s,"CONST_STRING",""); :} 
-		| CONST_STRING:s compara expresion {:setRegla("[Regla 27] CONST_STRING compara expresion"); controlString((String) s); setSimbolos((String) s,"CONST_STRING",""); :}
+		| expresion compara CONST_STRING:s {:setRegla("[Regla 26] expresion compara CONST_STRING"); controlString((String)s); setSimbolos((String)s,"CONST_STRING"); :} 
+		| CONST_STRING:s compara expresion {:setRegla("[Regla 27] CONST_STRING compara expresion"); controlString((String)s); setSimbolos((String)s,"CONST_STRING"); :}
 		| error compara;
 compara ::= MAYOR {:setRegla("[Regla 28] MAYOR"); :}
 		| MENOR {:setRegla("[Regla 29] MENOR"); :}
@@ -224,23 +224,27 @@ promr ::= PR_PROMR PARENA ID PUNTOYCOMA MENOROIGUAL PUNTOYCOMA listaval PARENC {
 			| error PARENC;
 listaval ::= CORCHA CORCHC {:setRegla("[Regla 38] listaval vacia"); :};
 listaval ::= CORCHA valores CORCHC {:setRegla("[Regla 39] listaval"); :};
-valores ::= valores COMA CONST_INT:i   {:setRegla("[Regla 40] valores ,CONST_INT"); controlEntero((String) i); setSimbolos((String) i,"CONST_INT",""); :}
+valores ::= valores COMA CONST_INT:i   {:setRegla("[Regla 40] valores ,CONST_INT"); controlEntero((String)i); setSimbolos((String)i,"CONST_INT"); :}
 			| error COMA;
-valores ::= CONST_INT:i {:setRegla("[Regla 41] valores CONST_INT"); controlEntero((String)i); setSimbolos((String) i,"CONST_INT","");:};
+valores ::= CONST_INT:i {:setRegla("[Regla 41] valores CONST_INT"); controlEntero((String)i); setSimbolos((String) i,"CONST_INT");:};
 
 
-constante ::= CONST_INT:i {:setRegla("[Regla 42] CONST_INT");  controlEntero((String)i); setSimbolos((String) i,"CONST_INT",""); :} 
-		| CONST_STRING:s {:setRegla("[Regla 43] CONST_STRING"); controlString((String )s); setSimbolos((String) s,"CONST_STRING",""); :} 
-		| CONST_FLOAT:f {:setRegla("[Regla 44] CONST_FLOAT"); controlReal((String) f); setSimbolos((String) f,"CONST_FLOAT",""); :};   
+constante ::= CONST_INT:i {:setRegla("[Regla 42] CONST_INT");  controlEntero((String)i); setSimbolos((String) i,"CONST_INT"); :} 
+		| CONST_STRING:s {:setRegla("[Regla 43] CONST_STRING"); controlString((String )s); setSimbolos((String) s,"CONST_STRING"); :} 
+		| CONST_FLOAT:f {:setRegla("[Regla 44] CONST_FLOAT"); controlReal((String) f); setSimbolos((String) f,"CONST_FLOAT"); :};   
 expresion ::= expresion SUMA termino {:setRegla("[Regla 45] E+T"); :} 
 		| expresion RESTA termino {:setRegla("[Regla 46] E-T"); :} 
 		| termino {:setRegla("[Regla 47] T"); :};
 termino ::= termino MULTI factor {:setRegla("[Regla 48] T*F"); :} 
 		| termino DIVI factor {:setRegla("[Regla 49] T/F"); :} 
 		| factor{:setRegla("[Regla 50] F"); :};
-factor ::= CONST_INT:i {:setRegla("[Regla 51] CONST_INT es F" + i ); RESULT = i; controlEntero((String)i); setSimbolos((String) i,"CONST_INT","");:} 
-		| CONST_FLOAT:f {:setRegla( "[Regla 52] CONST_FLOAT es F"); controlReal((String) f);  setSimbolos((String) f,"CONST_FLOAT","");:} 
+factor ::= CONST_INT:i {:setRegla("[Regla 51] CONST_INT es F" + i ); RESULT = i; controlEntero((String)i); setSimbolos((String) i,"CONST_INT");:} 
+		| CONST_FLOAT:f {:setRegla( "[Regla 52] CONST_FLOAT es F"); controlReal((String) f);  setSimbolos((String) f,"CONST_FLOAT");:} 
 		| ID:i {: declareID((String) i); setRegla("[Regla 53] ID es F " + i); RESULT=i; :}
 	 	| PARENA expresion PARENC{:setRegla("[Regla 54] (E)"); :}
 	 	| promr {:setRegla("[Regla 55]  promr es F"); :}; 
              
+
+
+
+
